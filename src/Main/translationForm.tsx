@@ -7,8 +7,9 @@ import {
   InputLabel,
   FormControl,
 } from "@material-ui/core";
+import { useTheme } from "@material-ui/core/styles";
 import keyConfig from "./key.config";
-import { useStyles, DefaultTheme } from "../App";
+import { useStyles } from "../App";
 
 const { Translate } = require("@google-cloud/translate").v2;
 
@@ -27,7 +28,8 @@ const translate = new Translate({
 });
 
 const TranslationForm = () => {
-  const classes = useStyles(DefaultTheme);
+  const theme = useTheme();
+  const classes = useStyles(theme);
 
   const handleTextChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
     setTextQuery(event.target.value);
@@ -37,6 +39,7 @@ const TranslationForm = () => {
   const handleToLangChange = (event: React.ChangeEvent<{ value: unknown }>) => {
     setToLang(event.target.value as string);
   };
+
 
   const onClickSubmitButton = () => {
     async function translateText() {
@@ -88,8 +91,9 @@ const TranslationForm = () => {
         maxRows={10}
         fullWidth
         variant="outlined"
-        error={errorStatus != ""}
+        error={errorStatus !== ""}
         helperText={errorStatus}
+        color="secondary"
       />
       <div className="proceed flexvertical">
         <FormControl className={classes.formControl}>
@@ -101,6 +105,7 @@ const TranslationForm = () => {
             value={toLang}
             onChange={handleToLangChange}
             displayEmpty
+            color="secondary"
           >
             {languages.map(({ code, name }, index) => (
               <MenuItem key={code} value={code}>
@@ -109,7 +114,12 @@ const TranslationForm = () => {
             ))}
           </Select>
         </FormControl>
-        <Button className="button" onClick={onClickSubmitButton}>
+        <Button
+          className="button"
+          onClick={onClickSubmitButton}
+          variant="contained"
+          color="primary"
+        >
           Submit
         </Button>
       </div>
@@ -126,6 +136,7 @@ const TranslationForm = () => {
         inputProps={{
           readOnly: true,
         }}
+        color="secondary"
       />
     </div>
   );
